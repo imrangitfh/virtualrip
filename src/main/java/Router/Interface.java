@@ -11,6 +11,7 @@ public class Interface {
 
     private Router myRouter;
     private Interface neighbourInterface;
+    private Router neighbourRouter;
 
     public Interface(String interfaceName, String interfaceNr, IP_Address ip_address, Subnet subnet, Router myRouter){
         this.interfaceName = interfaceName;
@@ -18,5 +19,9 @@ public class Interface {
         this.ip_address = ip_address;
         this.subnet = subnet;
         this.myRouter = myRouter;
+    }
+
+    public void connectToRouter (Interface neighbourInterface){
+        //SUBNET ÜBERPRÜFEN BEVOR CONNECT
     }
 }
