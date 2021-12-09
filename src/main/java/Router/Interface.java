@@ -21,7 +21,33 @@ public class Interface {
         this.myRouter = myRouter;
     }
 
+    public Interface getNeighbourInterface() {
+        return neighbourInterface;
+    }
+
+    public void setNeighbourInterface(Interface neighbourInterface) {
+        this.neighbourInterface = neighbourInterface;
+    }
+
+    public Router getNeighbourRouter() {
+        return neighbourRouter;
+    }
+
+    public void setNeighbourRouter(Router neighbourRouter) {
+        this.neighbourRouter = neighbourRouter;
+    }
+
+    public Router getRoutername() {
+        return myRouter;
+    }
+
+
     public void connectToRouter (Interface neighbourInterface){
         //SUBNET ÜBERPRÜFEN BEVOR CONNECT
+        this.neighbourInterface = neighbourInterface;
+        this.neighbourRouter = neighbourInterface.getRoutername();
+
+        neighbourInterface.setNeighbourInterface(this);
+        neighbourInterface.setNeighbourRouter(myRouter);
     }
 }
