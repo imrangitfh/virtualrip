@@ -11,7 +11,7 @@ public class IP_Address {
 
 
     public IP_Address(String ip_address, int snm){
-        String[] quads = ip_address.split(".");
+        String[] quads = ip_address.split("\\.");
 
         if (quads.length != 4) {
             throw new IllegalArgumentException("ill formed ip - more or less than 4 quads");
@@ -32,9 +32,6 @@ public class IP_Address {
         this.network_id = new Subnet();
 
     }
-
-
-
 
 
     @Override
