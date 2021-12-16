@@ -59,6 +59,19 @@ public class IP_Address {
         return "IPAddress [" + a3 + "." + a2 + "." + a1 + "." + a0 + "]";
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        IP_Address that = (IP_Address) o;
+        return ip_address == that.ip_address;
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 
     public static void main(String[] args) {
         IP_Address ip = new IP_Address("192.168.1.24",24);

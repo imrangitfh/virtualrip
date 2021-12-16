@@ -15,7 +15,6 @@ public class Subnet {
 
     }
 
-
     @Override
     public String toString() {
         return network_id.toString();
@@ -38,11 +37,27 @@ public class Subnet {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Subnet subnet = (Subnet) o;
+        return snm.equals(subnet.snm) && network_id.equals(subnet.network_id);
+    }
+
+    @Override
+    public int hashCode() {
+        return 0;
+    }
 
     public static void main(String[] args) {
         IP_Address ip = new IP_Address("10.10.10.1",24);
         Subnet netid = new Subnet(ip);
 
-        System.out.println(netid.get_BroadcastIP());
+        IP_Address ip1 = new IP_Address("10.10.11.1",24);
+        Subnet netid1 = new Subnet(ip1);
+
+        System.out.println(netid.equals(netid1));
     }
 }
