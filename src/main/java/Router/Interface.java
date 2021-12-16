@@ -4,6 +4,9 @@ import Addresses.IP_Address;
 import Addresses.Subnet;
 
 public class Interface {
+
+    //static count for interface names ?
+
     private String interfaceName;
     private IP_Address ip_address;
     private Subnet subnet;
@@ -63,7 +66,7 @@ public class Interface {
         neighbourInterface.setNeighbourRouter(myRouter);
 
         System.out.println("successful connected");
-        System.out.println(neighbourInterface.getNeighbourRouter().getRouterName() + "is connected to " + this.neighbourRouter.getRouterName());
+        System.out.println(neighbourInterface.getNeighbourRouter().getRouterName() + " is connected to " + this.neighbourRouter.getRouterName());
     }
 
 }
