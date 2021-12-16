@@ -17,7 +17,7 @@ public class Router {
 
 
     public void addInterface (String name, String nr, IP_Address ip_address, Integer snm){
-        Interface new_interface = new Interface(name,nr,ip_address,new Subnet(),this);
+        Interface new_interface = new Interface(name,nr,ip_address,new Subnet(ip_address),this);
         Interfaces.add(new_interface);
     }
 

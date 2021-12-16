@@ -29,9 +29,24 @@ public class IP_Address {
 
         this.snm = snm;
 
-        this.network_id = new Subnet();
+        this.network_id = new Subnet(this);
 
     }
+
+
+    public int getIp_address_int() {
+        return ip_address;
+    }
+
+    public void setIp_address_int(int ip_address) {
+        this.ip_address = ip_address;
+    }
+
+    public int get_SNM(){
+        return snm;
+    }
+
+
 
 
     @Override
