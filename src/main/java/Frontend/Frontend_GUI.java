@@ -1,4 +1,4 @@
-package GUI;
+package Frontend;
 
 public class Frontend_GUI {
 }

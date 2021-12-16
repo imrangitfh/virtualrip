@@ -5,7 +5,6 @@ import Addresses.Subnet;
 
 public class Interface {
     private String interfaceName;
-    private String interfaceNr;
     private IP_Address ip_address;
     private Subnet subnet;
 
@@ -13,11 +12,10 @@ public class Interface {
     private Interface neighbourInterface;
     private Router neighbourRouter;
 
-    public Interface(String interfaceName, String interfaceNr, IP_Address ip_address, Subnet subnet, Router myRouter){
+    public Interface(String interfaceName,  IP_Address ip_address, Router myRouter){
         this.interfaceName = interfaceName;
-        this.interfaceNr = interfaceNr;
         this.ip_address = ip_address;
-        this.subnet = subnet;
+        this.subnet = ip_address.getNetwork_id();
         this.myRouter = myRouter;
     }
 
@@ -37,17 +35,35 @@ public class Interface {
         this.neighbourRouter = neighbourRouter;
     }
 
-    public Router getRoutername() {
+    public Router getRouter() {
         return myRouter;
     }
 
+    public Subnet getSubnet() { return this.subnet; }
 
-    public void connectToRouter (Interface neighbourInterface){
-        //SUBNET ÜBERPRÜFEN BEVOR CONNECT
+    public IP_Address getIp_address() { return this.ip_address; }
+
+    public String getInterfaceName() {
+        return interfaceName;
+    }
+
+    public void connectToRouterInterface (Interface neighbourInterface){
+        if (!getSubnet().equals(neighbourInterface.getSubnet())){
+            System.out.println("You cannot connect 2 interfaces in different networks");
+            return;
+        }else if(ip_address.equals(neighbourInterface.getIp_address())){
+            System.out.println("You cannot connect 2 interfaces with the same ip-address");
+            return;
+        }
+
         this.neighbourInterface = neighbourInterface;
-        this.neighbourRouter = neighbourInterface.getRoutername();
+        this.neighbourRouter = neighbourInterface.getRouter();
 
         neighbourInterface.setNeighbourInterface(this);
         neighbourInterface.setNeighbourRouter(myRouter);
+
+        System.out.println("successful connected");
+        System.out.println(neighbourInterface.getNeighbourRouter().getRouterName() + "is connected to " + this.neighbourRouter.getRouterName());
     }
+
 }

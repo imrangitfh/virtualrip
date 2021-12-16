@@ -10,8 +10,8 @@ public class Subnet {
         ip_add_int = ip_add_int >> 32-snm;
         ip_add_int = ip_add_int << 32-snm;
 
-        network_id = ip_address;
-        network_id.setIp_address_int(ip_add_int);
+        this.network_id = new IP_Address("1.0.0.1",snm);
+        this.network_id.setIp_address_int(ip_add_int);
 
     }
 
@@ -51,13 +51,5 @@ public class Subnet {
         return 0;
     }
 
-    public static void main(String[] args) {
-        IP_Address ip = new IP_Address("10.10.10.1",24);
-        Subnet netid = new Subnet(ip);
 
-        IP_Address ip1 = new IP_Address("10.10.11.1",24);
-        Subnet netid1 = new Subnet(ip1);
-
-        System.out.println(netid.equals(netid1));
-    }
 }

@@ -46,6 +46,10 @@ public class IP_Address {
         return snm;
     }
 
+    public Subnet getNetwork_id(){
+        return this.network_id;
+    }
+
 
 
 
