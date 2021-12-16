@@ -21,11 +21,28 @@ public class Subnet {
         return network_id.toString();
     }
 
+    public IP_Address get_BroadcastIP(){
+        IP_Address broadcast = network_id;
+        broadcast.setIp_address_int(network_id.getIp_address_int() | getSetBits(32-snm));
+        return broadcast;
+    }
+
+    public int getSetBits (int count) {
+        int result = 0;
+        int combinder =1;
+        for(int i= 0;i<count;i++){
+            result += combinder;
+            combinder = combinder << 1;
+        }
+        return result;
+    }
+
+
 
     public static void main(String[] args) {
-        IP_Address ip = new IP_Address("10.10.10.1",22);
+        IP_Address ip = new IP_Address("10.10.10.1",24);
         Subnet netid = new Subnet(ip);
 
-        System.out.println(netid);
+        System.out.println(netid.get_BroadcastIP());
     }
 }
