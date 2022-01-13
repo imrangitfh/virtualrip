@@ -2,7 +2,7 @@ package Addresses;
 
 public class Subnet {
     private Integer snm;
-    private IP_Address network_id;
+    public IP_Address network_id;
 
     public Subnet(IP_Address ip_address) {
         int ip_add_int = ip_address.getIp_address_int();
@@ -17,7 +17,7 @@ public class Subnet {
 
     @Override
     public String toString() {
-        return network_id.toString();
+        return network_id.printNetworkID();
     }
 
     public IP_Address get_BroadcastIP(){

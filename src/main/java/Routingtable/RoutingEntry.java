@@ -17,6 +17,18 @@ public class RoutingEntry {
         this.metric = metric;
     }
 
+    public Subnet getNetwork_id() {
+        return network_id;
+    }
+
+    public IP_Address getNextHop_IP() {
+        return nextHop_IP;
+    }
+
+    public Integer getMetric() {
+        return metric;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,4 +48,10 @@ public class RoutingEntry {
     public int hashCode() {
         return Objects.hash(network_id);
     }
+
+    @Override
+    public String toString() {
+        return network_id + ", nextHop=" + nextHop_IP +", Metrik="+ metric.toString();
+    }
+
 }

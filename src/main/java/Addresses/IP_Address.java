@@ -79,13 +79,13 @@ public class IP_Address {
         return 0;
     }
 
-    public static void main(String[] args) {
-        IP_Address ip = new IP_Address("192.168.1.24",24);
-        System.out.println(ip.toString());
+    public String printNetworkID(){
+        int a0 = (ip_address       ) & 0xff;
+        int a1 = (ip_address >>>  8) & 0xff;
+        int a2 = (ip_address >>> 16) & 0xff;
+        int a3 = (ip_address >>> 24) & 0xff;
+
+        return "NetworkID [" + a3 + "." + a2 + "." + a1 + "." + a0 + "]";
     }
-
-
-
-
 
 }

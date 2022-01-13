@@ -35,8 +35,10 @@ public class Frontend_CMD {
             System.out.println(inteface_iterate.getIp_address());
         }
 
-        System.out.println("test");
         a.getInterface("a 0/0").connectToRouterInterface(b.getInterface("a 0/0"));
+
+        a.printRoutingtable();
+        b.printRoutingtable();
 
 
     }

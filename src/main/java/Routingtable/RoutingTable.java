@@ -6,9 +6,28 @@ public class RoutingTable {
 
     private ArrayList<RoutingEntry> routingtable = new ArrayList<RoutingEntry>();
 
-    public void addRoutingEntry (RoutingEntry routingEntry){
-        //vergleich von versch. Routingentries
-        routingtable.add(routingEntry);
+    public void addRoutingEntry (RoutingEntry newroutingEntry){
+        boolean contains = false;
+        for(RoutingEntry entry:routingtable){
+            if(entry.getNetwork_id().equals(newroutingEntry.getNetwork_id()) && entry.getMetric() > newroutingEntry.getMetric()){
+                routingtable.remove(entry);
+                routingtable.add(newroutingEntry);
+                contains = true;
+                break;
+            }
+            if(entry.getNetwork_id().equals(newroutingEntry.getNetwork_id())
+                    && entry.getMetric() < newroutingEntry.getMetric()
+                    && entry.getNextHop_IP().equals(newroutingEntry.getNextHop_IP())){
+                routingtable.remove(entry);
+                routingtable.add(newroutingEntry);
+                contains = true;
+                break;
+            }
+        }
+        if(!contains && !routingtable.contains(newroutingEntry)){
+            routingtable.add(newroutingEntry);
+        }
+
     }
 
     public void removeRoutingEntry (RoutingEntry search_routingEntry){
@@ -29,6 +48,15 @@ public class RoutingTable {
     }
 
 
+    @Override
+    public String toString() {
+        String strOutput = "Routingtable [";  //Prints constructor name + left bracket
+        for (int i = 0; i < routingtable.size(); i++) {
+            strOutput += routingtable.get(i) + ", \n              ";
+        }
+        strOutput = strOutput + "]";
+        return strOutput;
+    }
 
 
     public ArrayList<RoutingEntry> getRoutingtable() {

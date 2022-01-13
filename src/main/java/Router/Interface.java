@@ -2,6 +2,7 @@ package Router;
 
 import Addresses.IP_Address;
 import Addresses.Subnet;
+import Routingtable.RoutingEntry;
 
 public class Interface {
 
