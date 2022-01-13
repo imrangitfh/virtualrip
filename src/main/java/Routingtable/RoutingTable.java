@@ -8,6 +8,10 @@ public class RoutingTable {
 
     public void addRoutingEntry (RoutingEntry newroutingEntry){
         boolean contains = false;
+        if(newroutingEntry.getMetric() > 15){
+            return;
+        }
+
         for(RoutingEntry entry:routingtable){
             if(entry.getNetwork_id().equals(newroutingEntry.getNetwork_id()) && entry.getMetric() > newroutingEntry.getMetric()){
                 routingtable.remove(entry);
@@ -50,7 +54,7 @@ public class RoutingTable {
 
     @Override
     public String toString() {
-        String strOutput = "Routingtable [";  //Prints constructor name + left bracket
+        String strOutput = "Routingtable [";
         for (int i = 0; i < routingtable.size(); i++) {
             strOutput += routingtable.get(i) + ", \n              ";
         }

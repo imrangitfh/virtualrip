@@ -36,7 +36,6 @@ public class Router {
     public Interface getInterface(String getinterface){
         for(Interface compareInterface:Interfaces){
             if (getinterface.equals(compareInterface.getInterfaceName())){
-                System.out.println("interface found");
                 return compareInterface;
             }
         }
@@ -51,6 +50,19 @@ public class Router {
     public void addRoutingEntry(RoutingEntry entry){
         routingTable.addRoutingEntry(entry);
     }
+
+    public void sendRoutingUpdate(){
+        for(Interface int_parse:Interfaces){
+            if(int_parse.getNeighbourRouter() != null) {
+                for(RoutingEntry entry:routingTable.getRoutingtable()){
+                    int_parse.getNeighbourRouter().addRoutingEntry(new RoutingEntry(entry.getNetwork_id(), int_parse.getIp_address(), entry.getMetric()+1));
+                }
+            }
+        }
+
+    }
+
+
 
 
 }

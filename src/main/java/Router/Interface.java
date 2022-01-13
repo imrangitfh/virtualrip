@@ -70,4 +70,8 @@ public class Interface {
         System.out.println(neighbourInterface.getNeighbourRouter().getRouterName() + " is connected to " + this.neighbourRouter.getRouterName());
     }
 
+    @Override
+    public String toString() {
+        return interfaceName;
+    }
 }
