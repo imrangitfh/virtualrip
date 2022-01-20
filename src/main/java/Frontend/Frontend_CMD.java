@@ -18,7 +18,6 @@ public class Frontend_CMD {
     Scanner sc = new Scanner(System.in);
     ArrayList<Router> routers = new ArrayList<Router>();
 
-    //überprüfung von interface namen - muss einzigartig sein
     //überprüfung ob interface nicht schon connected ist
 
     public void printIntro(){
@@ -41,7 +40,12 @@ public class Frontend_CMD {
         for(Router router:routers){
             if(in.equals(router.getRouterName())){
                 for(Interface interf:router.getInterfaces()){
-                    System.out.println(interf.getInterfaceName());
+                    System.out.print(interf.getInterfaceName() + " - ");
+                    if(interf.isConnected()){
+                        System.out.println("connected to " + interf.getNeighbourRouter().getRouterName());
+                    }else {
+                        System.out.println("not connected");
+                    }
                 }
             }
         }
@@ -70,15 +74,22 @@ public class Frontend_CMD {
             if(in.equals(router.getRouterName())){
                 System.out.print("Name of the interface:");
                 String intname = sc.next();
+                for(Interface interface1:router.getInterfaces()){
+                    if(intname.equals(interface1.getInterfaceName())){
+                        System.out.println("Dieser Interfacename ist schon vorhanden");
+                        return;
+                    }
+                }
                 System.out.print("IP-Address of the interface:");
                 String ipadd = sc.next();
                 System.out.print("SNM of the interface in digits:");
                 int snm = sc.nextInt();
+
                 router.addInterface(intname,new IP_Address(ipadd,snm));
                 return;
             }
         }
-        System.out.println("Interfacename not found");
+        System.out.println("Router not found");
     }
 
     public void connectRouters(){
@@ -94,17 +105,26 @@ public class Frontend_CMD {
         for(Router router1:routers) {
             if (r1.equals(router1.getRouterName())) {
                 for(Interface interface1:router1.getInterfaces()){
-                    for(Router router2:routers) {
-                        if (r2.equals(router2.getRouterName())) {
-                            for(Interface interface2:router2.getInterfaces()){
-                                interface1.connectToRouterInterface(interface2);
-                                return;
+                    if(interface1.getInterfaceName().equals(int1)){
+                        for(Router router2:routers) {
+                            if (r2.equals(router2.getRouterName())) {
+                                for(Interface interface2:router2.getInterfaces()){
+                                    if(interface2.getInterfaceName().equals(int2)){
+                                        if(interface1.isConnected() || interface2.isConnected()){
+                                            System.out.println("one of the interfaces is already connected");
+                                            return;
+                                        }
+                                        interface1.connectToRouterInterface(interface2);
+                                        return;
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
         }
+        System.out.println("a Router or Interface couldn't be found");
     }
 
     public void getNeighbors(){
@@ -127,10 +147,10 @@ public class Frontend_CMD {
         }
     }
 
-    public void ping(){
-        System.out.print("Ping from which host:");
+    public void ping_trace(int a) throws InterruptedException {
+        System.out.print("From which host:");
         String host = sc.next();
-        System.out.print("Ping which Host-IP:");
+        System.out.print("To which Destination Host-IP:");
         String dest = sc.next();
         IP_Address destination = new IP_Address(dest,24);
         for(Router router1:routers) {
@@ -140,15 +160,19 @@ public class Frontend_CMD {
                         destination.set_SNM(routingEntry.getNetwork_id().get_SNM());
                     }
                 }
-                router1.executePing(destination);
+                if(a==0){
+                    router1.executePing(destination);
+                }else {
+                    router1.traceroute(destination);
+                }
+
+
             }
         }
-
-
     }
 
 
-    public void process (){
+    public void process () throws InterruptedException {
 
         printIntro();
         printGuideline();
@@ -168,6 +192,9 @@ public class Frontend_CMD {
 
 
         while (true){
+            // help /
+
+
             System.out.println("What do you want to do next?");
             String in = sc.next();
             if(in.equals("createRouter")){
@@ -193,9 +220,9 @@ public class Frontend_CMD {
                 Router.setAutomaticUpdates(false);
                 t1.stop();
             }else if(in.equals("ping")){
-                ping();
+                ping_trace(0);
             }else if(in.equals("traceroute")){
-                //traceroute();
+                ping_trace(1);
             }
 
         }

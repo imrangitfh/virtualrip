@@ -15,6 +15,7 @@ public class Interface {
     private Router myRouter;
     private Interface neighbourInterface;
     private Router neighbourRouter;
+    private boolean isConnected;
 
     public Interface(String interfaceName,  IP_Address ip_address, Router myRouter){
         this.interfaceName = interfaceName;
@@ -51,6 +52,14 @@ public class Interface {
         return interfaceName;
     }
 
+    public boolean isConnected() {
+        return isConnected;
+    }
+
+    public void setConnected(boolean connected) {
+        isConnected = connected;
+    }
+
     public void connectToRouterInterface (Interface neighbourInterface){
         if (!getSubnet().equals(neighbourInterface.getSubnet())){
             System.out.println("You cannot connect 2 interfaces in different networks");
@@ -68,6 +77,8 @@ public class Interface {
 
         System.out.println("successful connected");
         System.out.println(neighbourInterface.getNeighbourRouter().getRouterName() + " is connected to " + this.neighbourRouter.getRouterName());
+        this.isConnected = true;
+        neighbourInterface.setConnected(true);
     }
 
     @Override

@@ -111,7 +111,6 @@ public class Router {
         int counter = 1;
         Router currentRouter = this;
         System.out.println("Start traceroute to destination " + dest_ip_address);
-        TimeUnit.MILLISECONDS.sleep(2000);
         if(routingTable.containsIP(dest_ip_address)){
             while (currentRouter.routingTable.getRoutingEntry(dest_ip_address).getMetric()!=0){
                 TimeUnit.MILLISECONDS.sleep(2000);
