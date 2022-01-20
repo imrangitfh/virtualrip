@@ -1,5 +1,7 @@
 package Routingtable;
 
+import Addresses.IP_Address;
+
 import java.util.ArrayList;
 
 public class RoutingTable {
@@ -50,6 +52,26 @@ public class RoutingTable {
         }
         return false;
     }
+
+    public boolean containsIP(IP_Address ip_address){
+        for (RoutingEntry routingEntry:routingtable) {
+            if(routingEntry.getNetwork_id().equals(ip_address.getNetwork_id())){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public RoutingEntry getRoutingEntry(IP_Address ip_address){
+        for (RoutingEntry routingEntry:routingtable) {
+            if(routingEntry.getNetwork_id().equals(ip_address.getNetwork_id())){
+                return routingEntry;
+            }
+        }
+        return null;
+    }
+
+
 
 
     @Override

@@ -9,6 +9,7 @@ import Routingtable.RoutingEntry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 
@@ -126,6 +127,26 @@ public class Frontend_CMD {
         }
     }
 
+    public void ping(){
+        System.out.print("Ping from which host:");
+        String host = sc.next();
+        System.out.print("Ping which Host-IP:");
+        String dest = sc.next();
+        IP_Address destination = new IP_Address(dest,24);
+        for(Router router1:routers) {
+            if (host.equals(router1.getRouterName())) {
+                for(RoutingEntry routingEntry:router1.getRoutingTable().getRoutingtable()){
+                    if(routingEntry.getNetwork_id().containsIP(destination)){
+                        destination.set_SNM(routingEntry.getNetwork_id().get_SNM());
+                    }
+                }
+                router1.executePing(destination);
+            }
+        }
+
+
+    }
+
 
     public void process (){
 
@@ -133,12 +154,18 @@ public class Frontend_CMD {
         printGuideline();
         routers.add(new Router("R1"));
         routers.get(0).addInterface("int1",new IP_Address("10.0.0.1",24));
-        routers.get(0).addInterface("int2",new IP_Address("11.0.0.1",24));
 
         routers.add(new Router("R2"));
         routers.get(1).addInterface("int1",new IP_Address("10.0.0.2",24));
+        routers.get(1).addInterface("int2",new IP_Address("11.0.0.1",24));
+
+        routers.add(new Router("R3"));
+        routers.get(2).addInterface("int1",new IP_Address("11.0.0.2",24));
+
 
         routers.get(0).getInterfaces().get(0).connectToRouterInterface(routers.get(1).getInterfaces().get(0));
+        routers.get(1).getInterfaces().get(1).connectToRouterInterface(routers.get(2).getInterfaces().get(0));
+
 
         while (true){
             System.out.println("What do you want to do next?");
@@ -157,8 +184,18 @@ public class Frontend_CMD {
                 connectRouters();
             }else if(in.equals("getNeighbors")){
                 getNeighbors();
-            }else if(in.equals("sendRoutingUpdates")){
+            }else if(in.equals("sendRoutingUpdate")){
                 sendRoutingUpdates();
+            }else if(in.equals("enableRoutingUpdates")){
+                Router.setAutomaticUpdates(true);
+                t1.start();
+            }else if(in.equals("disableRoutingUpdates")){
+                Router.setAutomaticUpdates(false);
+                t1.stop();
+            }else if(in.equals("ping")){
+                ping();
+            }else if(in.equals("traceroute")){
+                //traceroute();
             }
 
         }
@@ -168,11 +205,24 @@ public class Frontend_CMD {
     }
 
 
+    Thread t1 = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            try {
+                while(Router.isAutomaticUpdates()){
+                    sendRoutingUpdates();
+                    System.out.println("Update sent");
+                    TimeUnit.MILLISECONDS.sleep(30000);
+                }
+            } catch (Exception e) {
+
+            }
+        }
+    });
 
 
 
-
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         Frontend_CMD cmd = new Frontend_CMD();
         cmd.process();
 
@@ -186,10 +236,37 @@ public class Frontend_CMD {
 
         Router c = new Router("R3");
         c.addInterface("a 0/0", new IP_Address("11.0.0.1",24));
+        c.addInterface("a 0/1", new IP_Address("12.0.0.1",24));
+
+        Router d = new Router("R4");
+        d.addInterface("a 0/0", new IP_Address("12.0.0.2",24));
+        d.addInterface("a 0/1", new IP_Address("13.0.0.1",24));
+
+        Router e = new Router("R5");
+        e.addInterface("a 0/0", new IP_Address("13.0.0.2",24));
+
+
+
 
         a.getInterface("a 0/0").connectToRouterInterface(b.getInterface("a 0/0"));
         b.getInterface("a 0/1").connectToRouterInterface(c.getInterface("a 0/0"));
+        c.getInterface("a 0/1").connectToRouterInterface(d.getInterface("a 0/0"));
+        d.getInterface("a 0/1").connectToRouterInterface(e.getInterface("a 0/0"));
 
+        for(int i=0;i<6;i++){
+            a.sendRoutingUpdate();
+            b.sendRoutingUpdate();
+            c.sendRoutingUpdate();
+            d.sendRoutingUpdate();
+            e.sendRoutingUpdate();
+        }
+
+        a.traceroute(new IP_Address("13.0.0.5",24));
+        */
+
+
+
+        /*
         a.printRoutingtable();
         b.printRoutingtable();
         c.printRoutingtable();

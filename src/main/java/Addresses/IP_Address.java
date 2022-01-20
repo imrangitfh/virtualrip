@@ -47,6 +47,10 @@ public class IP_Address {
         return snm;
     }
 
+    public void set_SNM(int snm1){
+        snm=snm1;
+    }
+
     public Subnet getNetwork_id(){
         setNetwork_id();
         return this.network_id;

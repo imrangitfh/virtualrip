@@ -15,6 +15,10 @@ public class Subnet {
 
     }
 
+    public int get_SNM(){
+        return snm;
+    }
+
     @Override
     public String toString() {
         return network_id.printNetworkID();
@@ -49,6 +53,16 @@ public class Subnet {
     @Override
     public int hashCode() {
         return 0;
+    }
+
+    public boolean containsIP(IP_Address ip){
+        int i =  ip.getIp_address_int() >> 32-snm;
+        i = i << 32-snm;
+        if(i==this.network_id.getIp_address_int()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
