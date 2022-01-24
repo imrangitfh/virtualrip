@@ -18,14 +18,92 @@ public class Frontend_CMD {
     Scanner sc = new Scanner(System.in);
     ArrayList<Router> routers = new ArrayList<Router>();
 
-    //überprüfung ob interface nicht schon connected ist
-
     public void printIntro(){
         System.out.println("Welcome to RVR - RIP Virtual Routing");
+        printGuideline();
     }
 
     public void printGuideline (){
-        System.out.println("");
+        System.out.println("You have the following options to continue with our software. \nIf you want to processd with one of the steps, type in the command and press enter. \n\nYou can use the following commands: \n"
+        + "createRouter \n" +
+                "createInterface \n" +
+                "printRoutingtable \n" +
+                "printRouters \n" +
+                        "printInterfaces \n" +
+                        "connectRouters \n" +
+                        "getNeighbors \n" +
+                        "sendRoutingUpdate \n" +
+                        "enableRoutingUpdates \n" +
+                        "disableRoutingUpdates \n" +
+                "ping \n" +
+                "traceroute \n" +
+                "help \n" +
+                "end \n" +
+                "type the 'help' command at any time to display this guidlines again!");
+    }
+
+    public void process () throws InterruptedException {
+
+        printIntro();
+        routers.add(new Router("R1"));
+        routers.get(0).addInterface("int1",new IP_Address("10.0.0.1",24));
+
+        routers.add(new Router("R2"));
+        routers.get(1).addInterface("int1",new IP_Address("10.0.0.2",24));
+        routers.get(1).addInterface("int2",new IP_Address("11.0.0.1",24));
+
+        routers.add(new Router("R3"));
+        routers.get(2).addInterface("int1",new IP_Address("11.0.0.2",24));
+
+
+        routers.get(0).getInterfaces().get(0).connectToRouterInterface(routers.get(1).getInterfaces().get(0));
+        routers.get(1).getInterfaces().get(1).connectToRouterInterface(routers.get(2).getInterfaces().get(0));
+
+
+        while (true){
+            // help /
+
+
+            System.out.println("What do you want to do next?");
+            String in = sc.next();
+            if(in.equals("createRouter")){
+                createRouter();
+            }else if(in.equals("createInterface")){
+                createInterface();
+            }else if(in.equals("printRoutingtable")){
+                printRoutingtable();
+            }else if(in.equals("printInterfaces")){
+                printInterfaces();
+            }else if(in.equals("printRouters")){
+                printRouters();
+            }else if(in.equals("connectRouters")){
+                connectRouters();
+            }else if(in.equals("getNeighbors")){
+                getNeighbors();
+            }else if(in.equals("sendRoutingUpdate")){
+                sendRoutingUpdates();
+            }else if(in.equals("enableRoutingUpdates")){
+                Router.setAutomaticUpdates(true);
+                t1.start();
+            }else if(in.equals("disableRoutingUpdates")){
+                Router.setAutomaticUpdates(false);
+                t1.stop();
+            }else if(in.equals("ping")){
+                ping_trace(0);
+            }else if(in.equals("traceroute")){
+                ping_trace(1);
+            }
+            else if(in.equals("end")){
+                return;
+            }
+            else if(in.equals("help")){
+                printGuideline();
+            }
+
+        }
+
+
+
     }
 
     public void printRouters (){
@@ -172,64 +250,7 @@ public class Frontend_CMD {
     }
 
 
-    public void process () throws InterruptedException {
 
-        printIntro();
-        printGuideline();
-        routers.add(new Router("R1"));
-        routers.get(0).addInterface("int1",new IP_Address("10.0.0.1",24));
-
-        routers.add(new Router("R2"));
-        routers.get(1).addInterface("int1",new IP_Address("10.0.0.2",24));
-        routers.get(1).addInterface("int2",new IP_Address("11.0.0.1",24));
-
-        routers.add(new Router("R3"));
-        routers.get(2).addInterface("int1",new IP_Address("11.0.0.2",24));
-
-
-        routers.get(0).getInterfaces().get(0).connectToRouterInterface(routers.get(1).getInterfaces().get(0));
-        routers.get(1).getInterfaces().get(1).connectToRouterInterface(routers.get(2).getInterfaces().get(0));
-
-
-        while (true){
-            // help /
-
-
-            System.out.println("What do you want to do next?");
-            String in = sc.next();
-            if(in.equals("createRouter")){
-                createRouter();
-            }else if(in.equals("createInterface")){
-                createInterface();
-            }else if(in.equals("printRoutingtable")){
-                printRoutingtable();
-            }else if(in.equals("printInterfaces")){
-                printInterfaces();
-            }else if(in.equals("printRouters")){
-                printRouters();
-            }else if(in.equals("connectRouters")){
-                connectRouters();
-            }else if(in.equals("getNeighbors")){
-                getNeighbors();
-            }else if(in.equals("sendRoutingUpdate")){
-                sendRoutingUpdates();
-            }else if(in.equals("enableRoutingUpdates")){
-                Router.setAutomaticUpdates(true);
-                t1.start();
-            }else if(in.equals("disableRoutingUpdates")){
-                Router.setAutomaticUpdates(false);
-                t1.stop();
-            }else if(in.equals("ping")){
-                ping_trace(0);
-            }else if(in.equals("traceroute")){
-                ping_trace(1);
-            }
-
-        }
-
-
-
-    }
 
 
     Thread t1 = new Thread(new Runnable() {
