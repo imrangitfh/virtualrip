@@ -45,6 +45,7 @@ public class Frontend_CMD {
     public void process () throws InterruptedException {
 
         printIntro();
+
         routers.add(new Router("R1"));
         routers.get(0).addInterface("int1",new IP_Address("10.0.0.1",24));
 
@@ -54,10 +55,21 @@ public class Frontend_CMD {
 
         routers.add(new Router("R3"));
         routers.get(2).addInterface("int1",new IP_Address("11.0.0.2",24));
+        routers.get(2).addInterface("int2",new IP_Address("12.0.0.1",24));
+
+        routers.add(new Router("R4"));
+        routers.get(3).addInterface("int1",new IP_Address("12.0.0.2",24));
+        routers.get(3).addInterface("int2",new IP_Address("13.0.0.1",24));
+
+        routers.add(new Router("R5"));
+        routers.get(4).addInterface("int1",new IP_Address("13.0.0.2",24));
 
 
         routers.get(0).getInterfaces().get(0).connectToRouterInterface(routers.get(1).getInterfaces().get(0));
         routers.get(1).getInterfaces().get(1).connectToRouterInterface(routers.get(2).getInterfaces().get(0));
+        routers.get(2).getInterfaces().get(1).connectToRouterInterface(routers.get(3).getInterfaces().get(0));
+        routers.get(3).getInterfaces().get(1).connectToRouterInterface(routers.get(4).getInterfaces().get(0));
+
 
 
         while (true){
@@ -171,11 +183,11 @@ public class Frontend_CMD {
     }
 
     public void connectRouters(){
-        System.out.print("Router 1 to connect");
+        System.out.print("name of first Router to connect:");
         String r1 = sc.next();
         System.out.print("Interface of " + r1 +":");
         String int1 = sc.next();
-        System.out.print("Router 2 to connect");
+        System.out.print("name of second Router to connect:");
         String r2 = sc.next();
         System.out.print("Interface of " + r2 +":");
         String int2 = sc.next();
